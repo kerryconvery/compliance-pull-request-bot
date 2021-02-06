@@ -6,11 +6,14 @@ module.exports = (app) => {
   // Your code here
   app.log.info("Yay, the app was loaded!");
 
-  app.on("issues.opened", async (context) => {
-    const issueComment = context.issue({
-      body: "Thanks for opening this issue!",
-    });
-    return context.octokit.issues.createComment(issueComment);
+  app.on("pull_request.opened", async (context) => {
+    const projectCard = {
+      column_id: 12714283,
+      content_type: 'PullRequest',
+      content_id: context.payload.pull_request.id
+    }
+    
+    return context.octokit.projects.createCard(projectCard);
   });
 
   // For more information on building apps:
